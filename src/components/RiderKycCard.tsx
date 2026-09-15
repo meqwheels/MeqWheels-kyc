@@ -83,7 +83,7 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
               {rider.name || 'Unnamed Rider'}
             </span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-400 font-medium">
-              R{rider.riderNumber}
+              Rider {item.globalRiderNumber ?? cardIndex + 1}
             </span>
           </div>
         </div>
@@ -97,6 +97,14 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
               {rider.phone ? `+91 ${rider.phone}` : 'N/A'}
             </span>
           </div>
+        </div>
+
+        {/* Customer ID (Derived from Booking ID + Rider number) */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium text-neutral-400">Customer ID:</span>
+          <span className="font-mono font-bold text-xs tracking-wider text-orange-400 px-2.5 py-1 rounded-lg bg-orange-500/10 border border-orange-500/25 shadow-sm">
+            {customerId?.trim() ? `${customerId.trim()}${item.globalRiderNumber ?? cardIndex + 1}` : `MEQ-${new Date().getFullYear()}-00001${item.globalRiderNumber ?? cardIndex + 1}`}
+          </span>
         </div>
 
         {/* Status */}

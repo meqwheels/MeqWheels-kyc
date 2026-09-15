@@ -32,6 +32,7 @@ export interface FlattenedRiderKYC {
   vehicleId: string;
   vehicleNumber: string;
   rider: Rider;
+  globalRiderNumber?: number;
   customerName: string;
   customerId: string;
 }

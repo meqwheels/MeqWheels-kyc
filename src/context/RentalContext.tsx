@@ -320,7 +320,7 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
   const loadDemoData = useCallback(() => {
     const currentYear = getCurrentYear();
     const demo: CustomerSession = {
-      customerId: `MEQ-${currentYear}-104`,
+      customerId: `MEQ-${currentYear}-00001`,
       customerName: 'Rahul Patil',
       phoneNumber: '9876543210',
       vehicles: [
@@ -364,12 +364,14 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
 
   const getAllRiders = useCallback((): FlattenedRiderKYC[] => {
     const list: FlattenedRiderKYC[] = [];
+    let riderCounter = 1;
     session.vehicles.forEach((v) => {
       list.push({
         uniqueKey: `${v.id}-r1`,
         vehicleId: v.id,
         vehicleNumber: v.vehicleNumber || 'UNASSIGNED',
         rider: v.rider1,
+        globalRiderNumber: riderCounter++,
         customerName: session.customerName || 'N/A',
         customerId: session.customerId || getDefaultCustomerId(),
       });
@@ -379,6 +381,7 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
           vehicleId: v.id,
           vehicleNumber: v.vehicleNumber || 'UNASSIGNED',
           rider: v.rider2,
+          globalRiderNumber: riderCounter++,
           customerName: session.customerName || 'N/A',
           customerId: session.customerId || getDefaultCustomerId(),
         });

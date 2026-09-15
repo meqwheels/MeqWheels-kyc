@@ -20,6 +20,14 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
     updateRider,
   } = useRental();
 
+  // Calculate dynamic sequential rider numbers based on all preceding vehicles
+  let startRiderNumber = 1;
+  for (let i = 0; i < index; i++) {
+    startRiderNumber += session.vehicles[i]?.hasSecondRider ? 2 : 1;
+  }
+  const rider1Number = startRiderNumber;
+  const rider2Number = startRiderNumber + 1;
+
   // Convenience helper: copy customer details to Rider 1
   const handleCopyCustomerToRider1 = () => {
     if (session.customerName) {
@@ -100,7 +108,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-orange-400" />
               <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-200">
-                Primary Rider (Rider 1)
+                Primary Rider (Rider {rider1Number})
               </h4>
             </div>
 
@@ -130,7 +138,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                 htmlFor={`r1-name-${vehicle.id}`}
                 className="text-[11px] font-medium text-neutral-300"
               >
-                Rider 1 Name <span className="text-orange-500">*</span>
+                Rider {rider1Number} Name <span className="text-orange-500">*</span>
               </label>
               <input
                 id={`r1-name-${vehicle.id}`}
@@ -149,7 +157,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                 htmlFor={`r1-phone-${vehicle.id}`}
                 className="text-[11px] font-medium text-neutral-300"
               >
-                Rider 1 Phone <span className="text-orange-500">*</span>
+                Rider {rider1Number} Phone <span className="text-orange-500">*</span>
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-medium text-neutral-500">
@@ -182,7 +190,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
               className="w-full group flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 text-orange-400 hover:text-orange-300 text-xs font-semibold tracking-wide transition-all duration-200 cursor-pointer"
             >
               <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
-              <span>+ Add Second Rider</span>
+              <span>+ Add Second Rider (Rider {rider2Number})</span>
             </button>
           ) : (
             /* Rider 2 Section */
@@ -191,7 +199,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-400" />
                   <h4 className="text-xs font-bold uppercase tracking-wider text-orange-400">
-                    Second Rider (Rider 2)
+                    Second Rider (Rider {rider2Number})
                   </h4>
                 </div>
 
@@ -201,7 +209,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                   className="text-xs text-neutral-400 hover:text-red-400 flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <Minus className="w-3.5 h-3.5" />
-                  <span>Remove Rider 2</span>
+                  <span>Remove Rider {rider2Number}</span>
                 </button>
               </div>
 
@@ -212,7 +220,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                     htmlFor={`r2-name-${vehicle.id}`}
                     className="text-[11px] font-medium text-neutral-300"
                   >
-                    Rider 2 Name <span className="text-orange-500">*</span>
+                    Rider {rider2Number} Name <span className="text-orange-500">*</span>
                   </label>
                   <input
                     id={`r2-name-${vehicle.id}`}
@@ -231,7 +239,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                     htmlFor={`r2-phone-${vehicle.id}`}
                     className="text-[11px] font-medium text-neutral-300"
                   >
-                    Rider 2 Phone <span className="text-orange-500">*</span>
+                    Rider {rider2Number} Phone <span className="text-orange-500">*</span>
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-medium text-neutral-500">

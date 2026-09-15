@@ -7,6 +7,23 @@ import { useRental } from '@/context/RentalContext';
 export function CustomerForm() {
   const { session, updateCustomer } = useRental();
   const currentYear = new Date().getFullYear();
+  const prefix = `MEQ-${currentYear}-`;
+
+  // Extract the custom number suffix from the session Booking ID
+  const getSuffix = (id: string) => {
+    if (!id) return '';
+    if (id.startsWith(prefix)) {
+      return id.slice(prefix.length);
+    }
+    const match = id.match(/^MEQ-\d{4}-(.*)$/i);
+    if (match) return match[1];
+    return id.replace(/^MEQ-/i, '');
+  };
+
+  const handleSuffixChange = (val: string) => {
+    const cleanSuffix = val.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    updateCustomer('customerId', `${prefix}${cleanSuffix}`);
+  };
 
   return (
     <div className="glass-panel p-6 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15">
@@ -32,22 +49,25 @@ export function CustomerForm() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Booking ID */}
         <div className="space-y-2">
-          <label htmlFor="customerId" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
+          <label htmlFor="customerIdSuffix" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
             <Hash className="w-3.5 h-3.5 text-orange-400" />
             Booking ID <span className="text-orange-500">*</span>
           </label>
-          <div className="relative">
+          <div className="relative flex items-center">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-neutral-400 select-none pointer-events-none tracking-wider bg-white/[0.06] border border-white/[0.08] px-2.5 py-1 rounded-md">
+              {prefix}
+            </span>
             <input
-              id="customerId"
+              id="customerIdSuffix"
               type="text"
-              value={session.customerId}
-              onChange={(e) => updateCustomer('customerId', e.target.value.toUpperCase())}
-              placeholder={`MEQ-${currentYear}-001`}
-              className="w-full glass-input px-4 py-3 text-sm font-mono tracking-wide placeholder:text-neutral-600 focus:text-white"
+              value={getSuffix(session.customerId)}
+              onChange={(e) => handleSuffixChange(e.target.value)}
+              placeholder="Enter ID number"
+              className="w-full glass-input pl-[126px] pr-4 py-3 text-sm font-mono tracking-wider placeholder:text-neutral-600 focus:text-white"
               required
             />
           </div>
-          <p className="text-[11px] text-neutral-500">Fixed format: MEQ-{currentYear}-ID</p>
+          <p className="text-[11px] text-neutral-500">Fixed prefix: {prefix} (enter any custom number)</p>
         </div>
 
         {/* Customer Name */}
