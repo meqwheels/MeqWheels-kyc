@@ -30,32 +30,50 @@ function createD1HttpClient(accountId: string, apiToken: string, databaseId: str
             body: JSON.stringify({ sql: query, params: boundParams }),
           });
           const data = await res.json();
+          if (!res.ok || data.success === false) {
+            const msg = data.errors?.[0]?.message || data.error || `Cloudflare D1 HTTP Error (${res.status})`;
+            throw new Error(msg);
+          }
           const firstResult = data.result?.[0];
           return {
             results: firstResult?.results || [],
-            success: data.success === true,
+            success: true,
             meta: firstResult?.meta || {},
           };
         },
         async run() {
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${apiToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ sql: query, params: boundParams }),
-          });
-          const data = await res.json();
-          const firstResult = data.result?.[0];
-          return {
-            results: firstResult?.results || [],
-            success: data.success === true,
-            meta: firstResult?.meta || {},
-          };
+          return stmt.all();
+        },
+        async first(colName?: string) {
+          const res = await stmt.all();
+          const row = res.results?.[0];
+          if (!row) return null;
+          return colName ? row[colName] : row;
+        },
+        async raw() {
+          const res = await stmt.all();
+          return res.results.map((r: any) => Object.values(r));
         },
       };
       return stmt;
+    },
+    async batch(statements: any[]) {
+      return Promise.all(statements.map((s: any) => s.all()));
+    },
+    async exec(query: string) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sql: query, params: [] }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.success === false) {
+        throw new Error(data.errors?.[0]?.message || 'Cloudflare D1 exec failed');
+      }
+      return { count: 1, duration: 0 };
     },
   };
 }
