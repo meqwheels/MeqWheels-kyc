@@ -18,7 +18,7 @@ export function ContinueButton() {
 
     // 1. Check customer details
     if (!session.customerId.trim()) {
-      setErrorMessage('Please provide a Customer ID.');
+      setErrorMessage('Please provide a Booking ID.');
       return;
     }
     if (!session.customerName.trim()) {
@@ -83,7 +83,7 @@ export function ContinueButton() {
 
           {session.customerId && (
             <span className="font-mono text-xs px-2 py-0.5 rounded bg-white/[0.05] text-neutral-400 border border-white/[0.05]">
-              ID: {session.customerId}
+              Booking: {session.customerId}
             </span>
           )}
         </div>

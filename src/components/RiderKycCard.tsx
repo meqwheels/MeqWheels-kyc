@@ -50,7 +50,7 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
 
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
-            {customerId}
+            Booking: {customerId}
           </span>
           {isVerified && (
             <button

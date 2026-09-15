@@ -25,7 +25,7 @@ export function AddVehicleButton() {
           </span>
         </div>
         <p className="text-xs text-neutral-400 group-hover:text-neutral-300 transition-colors mt-0.5">
-          Link additional bikes to this Customer ID with independent riders
+          Link additional bikes to this Booking ID with independent riders
         </p>
       </div>
     </button>

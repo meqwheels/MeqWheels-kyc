@@ -30,11 +30,11 @@ export function CustomerForm() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {/* Customer ID */}
+        {/* Booking ID */}
         <div className="space-y-2">
           <label htmlFor="customerId" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
             <Hash className="w-3.5 h-3.5 text-orange-400" />
-            Customer ID <span className="text-orange-500">*</span>
+            Booking ID <span className="text-orange-500">*</span>
           </label>
           <div className="relative">
             <input

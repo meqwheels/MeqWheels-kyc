@@ -30,7 +30,7 @@ export default function CreateRentalSessionPage() {
               Create Rental Session
             </h1>
             <p className="text-sm text-neutral-400 mt-1 max-w-2xl">
-              Link one Customer ID to multiple rented vehicles and assign up to 2 independent riders per bike.
+              Link one Booking ID to multiple rented vehicles and assign up to 2 independent riders per bike.
             </p>
           </div>
 

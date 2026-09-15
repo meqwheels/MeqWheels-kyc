@@ -79,7 +79,7 @@ export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarPr
 
       {/* Mini details strip */}
       <div className="flex items-center justify-between text-[11px] text-neutral-400 mt-2.5">
-        <span>Customer: <strong className="text-white font-medium">{session.customerName || 'N/A'}</strong> ({session.customerId})</span>
+        <span>Customer: <strong className="text-white font-medium">{session.customerName || 'N/A'}</strong> (Booking: {session.customerId})</span>
         <span>{pending > 0 ? `${pending} pending verification` : 'Ready for vehicle release'}</span>
       </div>
     </div>

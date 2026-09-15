@@ -73,7 +73,7 @@ export default function RiderKycPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
               Complete DigiLocker KYC
               <span className="text-xs font-mono font-medium px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
-                {session.customerId || 'CUST-001'}
+                Booking: {session.customerId}
               </span>
             </h1>
             <p className="text-sm text-neutral-400">
@@ -161,7 +161,7 @@ export default function RiderKycPage() {
             </h2>
 
             <span className="text-xs text-neutral-400">
-              Customer ID: <strong className="text-orange-400">{session.customerId}</strong>
+              Booking ID: <strong className="text-orange-400">{session.customerId}</strong>
             </span>
           </div>
 
@@ -194,7 +194,7 @@ export default function RiderKycPage() {
       <footer className="border-t border-white/[0.06] bg-black/40 py-4 px-4 text-center text-xs text-neutral-500">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>MEQ WHEELS Counter Terminal • Government DigiLocker Compliance Engine</span>
-          <span className="font-mono text-[11px] text-neutral-600">ID: {session.customerId}</span>
+          <span className="font-mono text-[11px] text-neutral-600">Booking ID: {session.customerId}</span>
         </div>
       </footer>
     </div>
