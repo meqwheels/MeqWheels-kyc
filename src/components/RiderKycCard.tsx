@@ -99,11 +99,11 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
           </div>
         </div>
 
-        {/* Customer ID (Derived from Booking ID + Rider number) */}
+        {/* Customer ID (Derived from Booking ID + hyphen + Rider number) */}
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium text-neutral-400">Customer ID:</span>
           <span className="font-mono font-bold text-xs tracking-wider text-orange-400 px-2.5 py-1 rounded-lg bg-orange-500/10 border border-orange-500/25 shadow-sm">
-            {customerId?.trim() ? `${customerId.trim()}${item.globalRiderNumber ?? cardIndex + 1}` : `MEQ-${new Date().getFullYear()}-00001${item.globalRiderNumber ?? cardIndex + 1}`}
+            {customerId?.trim() ? `${customerId.trim()}-${item.globalRiderNumber ?? cardIndex + 1}` : `MEQ-${new Date().getFullYear()}-00001-${item.globalRiderNumber ?? cardIndex + 1}`}
           </span>
         </div>
 
