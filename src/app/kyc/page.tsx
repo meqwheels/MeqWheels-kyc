@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { Header } from '@/components/Header';
 import { KycProgressBar } from '@/components/KycProgressBar';
@@ -20,9 +21,18 @@ import {
 } from 'lucide-react';
 
 export default function RiderKycPage() {
+  const router = useRouter();
   const { session, getAllRiders, getVerificationStats, verifyAllRiders, resetSession } = useRental();
   const [isSimulatingAll, setIsSimulatingAll] = useState(false);
   const [confettiTriggered, setConfettiTriggered] = useState(false);
+
+  // Automatically redirect to dynamic booking route if session exists
+  useEffect(() => {
+    if (session.customerId) {
+      router.replace(`/kyc/${encodeURIComponent(session.customerId)}`);
+    }
+  }, [session.customerId, router]);
+
 
   const ridersList = getAllRiders();
   const { total, verified, pending, percent } = getVerificationStats();

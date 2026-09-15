@@ -7,12 +7,31 @@ import { useRental } from '@/context/RentalContext';
 interface KycProgressBarProps {
   onSimulateAll?: () => void;
   isSimulating?: boolean;
+  stats?: {
+    total: number;
+    verified: number;
+    pending: number;
+    percent: number;
+  };
+  customerName?: string;
+  bookingId?: string;
 }
 
-export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarProps) {
+export function KycProgressBar({
+  onSimulateAll,
+  isSimulating,
+  stats: propStats,
+  customerName: propCustomerName,
+  bookingId: propBookingId,
+}: KycProgressBarProps) {
   const { getVerificationStats, session } = useRental();
-  const { total, verified, pending, percent } = getVerificationStats();
+  const contextStats = getVerificationStats();
+  const { total, verified, pending, percent } = propStats || contextStats;
   const isComplete = total > 0 && verified === total;
+
+  const displayCustomerName = propCustomerName ?? session.customerName;
+  const displayBookingId = propBookingId ?? session.customerId;
+
 
   return (
     <div className="glass-panel p-5 sm:p-6 relative overflow-hidden transition-all duration-300">
@@ -79,7 +98,7 @@ export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarPr
 
       {/* Mini details strip */}
       <div className="flex items-center justify-between text-[11px] text-neutral-400 mt-2.5">
-        <span>Customer: <strong className="text-white font-medium">{session.customerName || 'N/A'}</strong> (Booking: {session.customerId})</span>
+        <span>Customer: <strong className="text-white font-medium">{displayCustomerName || 'N/A'}</strong> (Booking: {displayBookingId})</span>
         <span>{pending > 0 ? `${pending} pending verification` : 'Ready for vehicle release'}</span>
       </div>
     </div>

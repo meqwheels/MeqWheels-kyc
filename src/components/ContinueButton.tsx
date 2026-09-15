@@ -1,19 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, AlertCircle, Shield, Sparkles } from 'lucide-react';
+import { ArrowRight, AlertCircle, Shield, Loader2 } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
 
 export function ContinueButton() {
   const router = useRouter();
-  const { session, getAllRiders } = useRental();
+  const { session, getAllRiders, updateCustomer } = useRental();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  // Prefetch Page 2 on mount for instantaneous navigation
-  useEffect(() => {
-    router.prefetch('/kyc');
-  }, [router]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const totalVehicles = session.vehicles.length;
   const totalRiders = getAllRiders().length;
@@ -26,7 +22,7 @@ export function ContinueButton() {
     }
   };
 
-  const validateAndProceed = () => {
+  const validateAndProceed = async () => {
     setErrorMessage(null);
 
     // 1. Check booking ID number
@@ -99,11 +95,45 @@ export function ContinueButton() {
       }
     }
 
-    // All valid! Execute guaranteed transition to Page 2
+    // 4. Save to Cloudflare D1 Backend
+    setIsSaving(true);
     try {
-      router.push('/kyc');
-    } catch {
-      window.location.href = '/kyc';
+      const payload = {
+        customerName: session.customerName,
+        phone: session.phoneNumber,
+        bookingId: session.customerId,
+        vehicles: session.vehicles.map((v) => ({
+          vehicleNo: v.vehicleNumber,
+          riders: [
+            { name: v.rider1.name, phone: v.rider1.phone },
+            ...(v.hasSecondRider && v.rider2 ? [{ name: v.rider2.name, phone: v.rider2.phone }] : []),
+          ],
+        })),
+      };
+
+      const res = await fetch('/api/booking/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to save booking to database.');
+      }
+
+      // Update bookingId in context
+      if (data.bookingId && data.bookingId !== session.customerId) {
+        updateCustomer('customerId', data.bookingId);
+      }
+
+      // Navigate to /kyc/[bookingId]
+      router.push(`/kyc/${data.bookingId}`);
+    } catch (err: any) {
+      console.error('Error saving to D1:', err);
+      setErrorMessage(err.message || 'Could not connect to database.');
+      setIsSaving(false);
     }
   };
 
@@ -141,12 +171,22 @@ export function ContinueButton() {
 
           <button
             type="button"
+            disabled={isSaving}
             onClick={validateAndProceed}
-            className="w-full sm:w-auto min-w-[240px] group relative flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:via-orange-500 hover:to-amber-400 text-white font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+            className="w-full sm:w-auto min-w-[240px] group relative flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:via-orange-500 hover:to-amber-400 disabled:opacity-75 disabled:cursor-wait text-white font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
           >
-            <Shield className="w-4 h-4 text-white" />
-            <span>Start DigiLocker KYC</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
+            {isSaving ? (
+              <>
+                <Loader2 className="w-4 h-4 text-white animate-spin" />
+                <span>Saving to D1 Database...</span>
+              </>
+            ) : (
+              <>
+                <Shield className="w-4 h-4 text-white" />
+                <span>Start DigiLocker KYC</span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
+              </>
+            )}
           </button>
         </div>
       </div>

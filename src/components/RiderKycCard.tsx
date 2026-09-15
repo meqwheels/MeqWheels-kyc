@@ -8,25 +8,55 @@ import { useRental } from '@/context/RentalContext';
 interface RiderKycCardProps {
   item: FlattenedRiderKYC;
   cardIndex: number;
+  onVerify?: (customerId: string) => Promise<void> | void;
+  onReset?: (customerId: string) => Promise<void> | void;
+  isVerifying?: boolean;
 }
 
-export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
+export function RiderKycCard({
+  item,
+  cardIndex,
+  onVerify,
+  onReset,
+  isVerifying: propIsVerifying,
+}: RiderKycCardProps) {
   const { verifyRider, resetRiderVerification } = useRental();
   const { rider, vehicleId, vehicleNumber, customerId } = item;
 
+  // Determine Customer ID and Booking ID accurately
+  const displayCustomerId = item.customerSpecificId
+    ? item.customerSpecificId
+    : /-\d+$/.test(customerId)
+    ? customerId
+    : `${customerId?.trim() || `MEQ-${new Date().getFullYear()}-00001`}-${item.globalRiderNumber ?? cardIndex + 1}`;
+
+  const displayBookingId = item.bookingId
+    ? item.bookingId
+    : /-\d+$/.test(customerId)
+    ? customerId.replace(/-\d+$/, '')
+    : (customerId || 'N/A');
+
   const isPending = rider.kycStatus === 'pending';
-  const isVerifying = rider.kycStatus === 'verifying';
+  const isVerifying = propIsVerifying || rider.kycStatus === 'verifying';
   const isVerified = rider.kycStatus === 'verified';
 
-  const handleVerify = () => {
-    if (isPending) {
-      verifyRider(vehicleId, rider.id);
+  const handleVerify = async () => {
+    if (isPending && !isVerifying) {
+      if (onVerify) {
+        await onVerify(displayCustomerId);
+      } else {
+        verifyRider(vehicleId, rider.id);
+      }
     }
   };
 
-  const handleReset = (e: React.MouseEvent) => {
+  const handleReset = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    resetRiderVerification(vehicleId, rider.id);
+    if (onReset) {
+      await onReset(displayCustomerId);
+    } else {
+      resetRiderVerification(vehicleId, rider.id);
+    }
   };
 
   return (
@@ -50,7 +80,7 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
 
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
-            Booking: {customerId}
+            Booking: {displayBookingId}
           </span>
           {isVerified && (
             <button
@@ -99,13 +129,14 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
           </div>
         </div>
 
-        {/* Customer ID (Derived from Booking ID + hyphen + Rider number) */}
+        {/* Customer ID */}
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium text-neutral-400">Customer ID:</span>
           <span className="font-mono font-bold text-xs tracking-wider text-orange-400 px-2.5 py-1 rounded-lg bg-orange-500/10 border border-orange-500/25 shadow-sm">
-            {customerId?.trim() ? `${customerId.trim()}-${item.globalRiderNumber ?? cardIndex + 1}` : `MEQ-${new Date().getFullYear()}-00001-${item.globalRiderNumber ?? cardIndex + 1}`}
+            {displayCustomerId}
           </span>
         </div>
+
 
         {/* Status */}
         <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
