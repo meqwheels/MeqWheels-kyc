@@ -47,6 +47,26 @@ export function CustomerForm() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Customer Name */}
+        <div className="space-y-2">
+          <label htmlFor="customerName" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-orange-400" />
+            Customer Name <span className="text-orange-500">*</span>
+          </label>
+          <div className="relative">
+            <input
+              id="customerName"
+              type="text"
+              value={session.customerName}
+              onChange={(e) => updateCustomer('customerName', e.target.value)}
+              placeholder="e.g. Rahul Patil"
+              className="w-full glass-input px-4 py-3 text-sm placeholder:text-neutral-600 focus:text-white"
+              required
+            />
+          </div>
+          <p className="text-[11px] text-neutral-500">Auto-populates Vehicle 1 primary rider</p>
+        </div>
+
         {/* Booking ID */}
         <div className="space-y-2">
           <label htmlFor="customerIdSuffix" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
@@ -70,25 +90,6 @@ export function CustomerForm() {
           <p className="text-[11px] text-neutral-500">Fixed prefix: {prefix} (enter any custom number)</p>
         </div>
 
-        {/* Customer Name */}
-        <div className="space-y-2">
-          <label htmlFor="customerName" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-orange-400" />
-            Customer Name <span className="text-orange-500">*</span>
-          </label>
-          <div className="relative">
-            <input
-              id="customerName"
-              type="text"
-              value={session.customerName}
-              onChange={(e) => updateCustomer('customerName', e.target.value)}
-              placeholder="e.g. Rahul Patil"
-              className="w-full glass-input px-4 py-3 text-sm placeholder:text-neutral-600 focus:text-white"
-              required
-            />
-          </div>
-          <p className="text-[11px] text-neutral-500">Auto-populates Vehicle 1 primary rider</p>
-        </div>
 
         {/* Phone Number */}
         <div className="space-y-2">
