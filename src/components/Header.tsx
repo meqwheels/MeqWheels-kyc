@@ -20,17 +20,17 @@ export function Header() {
   }, []);
 
   return (
-    <header className="relative w-full border-b border-white/[0.08] bg-black/40 backdrop-blur-xl sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-black/75 backdrop-blur-2xl">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         {/* Logo & Branding */}
-        <div className="flex items-center gap-3.5">
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 shadow-lg shadow-orange-500/25 border border-orange-400/40">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#1C1C1E] border border-white/[0.12] text-[#FF9500]">
             <svg
-              className="w-6 h-6 text-white"
+              className="w-5 h-5 text-[#FF9500]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.2"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -39,54 +39,52 @@ export function Header() {
               <path d="M15 6h-5l-3 6.5h8.5" />
               <path d="M12 17.5V14l-3-3 4-3 2 3h3" />
             </svg>
-            <div className="absolute -inset-0.5 rounded-2xl bg-orange-500/30 blur-sm -z-10" />
           </div>
 
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
-                MEQ <span className="text-orange-500">WHEELS</span>
-              </h1>
-              <span className="hidden xs:inline-flex items-center gap-1 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30 shimmer-badge">
-                <Sparkles className="w-3 h-3 text-orange-400" />
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold tracking-tight text-white">
+                MEQ <span className="text-[#FF9500]">WHEELS</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase rounded-full bg-white/[0.06] text-[#8E8E93] border border-white/[0.08]">
                 Portal
               </span>
             </div>
-            <p className="text-xs text-neutral-400 font-medium">Rental Counter KYC</p>
+            <p className="text-[11px] text-[#8E8E93] font-medium -mt-0.5">Rental Counter KYC</p>
           </div>
         </div>
 
         {/* Badges, Date & Demo Controls */}
-        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          {/* MSME Registered Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shadow-sm">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>MSME Registered</span>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+          {/* MSME Registered Pill */}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#34C759]/12 border border-[#34C759]/25 text-[#34C759] text-[11px] font-medium">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>MSME Verified</span>
           </div>
 
-          {/* Current Date */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-medium">
-            <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+          {/* Current Date Pill */}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1C1C1E] border border-white/[0.08] text-[#8E8E93] text-[11px] font-medium">
+            <Calendar className="w-3.5 h-3.5" />
             <span suppressHydrationWarning>{currentDate || 'Today'}</span>
           </div>
 
-          {/* Quick Demo Fill & Reset buttons for counter convenience */}
+          {/* Counter Actions */}
           <div className="flex items-center gap-1.5 ml-auto sm:ml-2">
             <button
               onClick={loadDemoData}
               title="Load Demo Rental Scenario"
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-neutral-400 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-colors border border-transparent hover:border-orange-500/20"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-[#8E8E93] hover:text-[#FF9500] hover:bg-[#FF9500]/10 rounded-lg transition-colors border border-transparent hover:border-[#FF9500]/20 ios-pressable cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Sample Demo</span>
+              <Zap className="w-3 h-3" />
+              <span>Sample Demo</span>
             </button>
             <button
               onClick={resetSession}
               title="Reset Session"
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors border border-transparent hover:border-red-500/20"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-[#8E8E93] hover:text-[#FF3B30] hover:bg-[#FF3B30]/10 rounded-lg transition-colors border border-transparent hover:border-[#FF3B30]/20 ios-pressable cursor-pointer"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Reset</span>
+              <RefreshCw className="w-3 h-3" />
+              <span>Reset</span>
             </button>
           </div>
         </div>

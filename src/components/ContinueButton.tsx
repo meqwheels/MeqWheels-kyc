@@ -79,7 +79,6 @@ export function ContinueButton() {
 
       cumulativeRiders += 1;
 
-      // Check Rider 2 if toggled
       if (v.hasSecondRider && v.rider2) {
         if (!v.rider2.name || !v.rider2.name.trim()) {
           setErrorMessage(`Vehicle ${vNum}: Rider ${r2Num} Name is required since second rider is enabled.`);
@@ -123,12 +122,10 @@ export function ContinueButton() {
         throw new Error(data.error || 'Failed to save booking to database.');
       }
 
-      // Update bookingId in context
       if (data.bookingId && data.bookingId !== session.customerId) {
         updateCustomer('customerId', data.bookingId);
       }
 
-      // Navigate to /kyc/[bookingId]
       router.push(`/kyc/${data.bookingId}`);
     } catch (err: any) {
       console.error('Error saving to D1:', err);
@@ -138,33 +135,32 @@ export function ContinueButton() {
   };
 
   return (
-    <div className="sticky bottom-0 z-30 w-full bg-[#08080C]/95 backdrop-blur-2xl border-t border-white/[0.08] py-4 px-4 sm:px-6 shadow-2xl">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="sticky bottom-0 z-30 w-full bg-black/80 backdrop-blur-2xl border-t border-white/[0.08] py-3.5 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
         {/* Summary Info */}
-        <div className="flex items-center gap-4 text-xs sm:text-sm text-neutral-300 w-full sm:w-auto justify-between sm:justify-start">
+        <div className="flex items-center gap-3 text-xs sm:text-sm text-[#8E8E93] w-full sm:w-auto justify-between sm:justify-start">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-semibold text-white">
               {totalVehicles} {totalVehicles === 1 ? 'Vehicle' : 'Vehicles'}
             </span>
-            <span className="text-neutral-500">•</span>
-            <span className="font-semibold text-orange-400">
+            <span className="text-[#636366]">•</span>
+            <span className="font-medium text-[#FF9500]">
               {totalRiders} {totalRiders === 1 ? 'Rider' : 'Riders'} to Verify
             </span>
           </div>
 
           {session.customerId && (
-            <span className="font-mono text-xs px-2.5 py-1 rounded-lg bg-white/[0.05] text-neutral-300 border border-white/[0.08]">
-              Booking: {session.customerId}
+            <span className="font-mono text-[11px] px-2.5 py-1 rounded-lg bg-[#1C1C1E] text-[#8E8E93] border border-white/[0.06]">
+              {session.customerId}
             </span>
           )}
         </div>
 
         {/* Action Button & Error message */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
           {errorMessage && (
-            <div className="flex items-center gap-2 text-xs font-semibold text-red-400 bg-red-950/40 border border-red-500/40 px-3.5 py-2 rounded-xl animate-in fade-in shadow-lg">
-              <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+            <div className="flex items-center gap-2 text-xs font-medium text-[#FF3B30] bg-[#FF3B30]/12 border border-[#FF3B30]/25 px-3 py-2 rounded-xl animate-in fade-in">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{errorMessage}</span>
             </div>
           )}
@@ -173,18 +169,18 @@ export function ContinueButton() {
             type="button"
             disabled={isSaving}
             onClick={validateAndProceed}
-            className="w-full sm:w-auto min-w-[240px] group relative flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:via-orange-500 hover:to-amber-400 disabled:opacity-75 disabled:cursor-wait text-white font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+            className="w-full sm:w-auto min-w-[220px] group flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#FF9500] hover:bg-[#FF9500]/90 text-white font-semibold text-sm tracking-wide disabled:opacity-60 disabled:cursor-wait ios-pressable cursor-pointer shadow-sm"
           >
             {isSaving ? (
               <>
-                <Loader2 className="w-4 h-4 text-white animate-spin" />
-                <span>Saving to D1 Database...</span>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>Saving Booking...</span>
               </>
             ) : (
               <>
-                <Shield className="w-4 h-4 text-white" />
+                <Shield className="w-4 h-4" />
                 <span>Start DigiLocker KYC</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </>
             )}
           </button>

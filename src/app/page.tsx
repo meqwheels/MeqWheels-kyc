@@ -7,40 +7,38 @@ import { VehicleCard } from '@/components/VehicleCard';
 import { AddVehicleButton } from '@/components/AddVehicleButton';
 import { ContinueButton } from '@/components/ContinueButton';
 import { useRental } from '@/context/RentalContext';
-import { Bike, Shield, Layers } from 'lucide-react';
+import { Bike, Layers } from 'lucide-react';
 
 export default function CreateRentalSessionPage() {
   const { session } = useRental();
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#08080C] text-neutral-100">
-      {/* Header */}
+    <div className="flex flex-col min-h-screen bg-black text-[#F5F5F7]">
+      {/* Apple Navigation Header */}
       <Header />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
-        {/* Page Hero Intro */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2">
+      {/* Main Container */}
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
+        {/* Apple Large Title Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-1">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              <Layers className="w-3.5 h-3.5" />
-              Counter Booking Terminal
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.06] text-[#8E8E93] text-[11px] font-medium tracking-wide uppercase mb-2">
+              <Layers className="w-3 h-3 text-[#FF9500]" />
+              <span>Counter Terminal</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Create Rental Session
             </h1>
-            <p className="text-sm text-neutral-400 mt-1 max-w-2xl">
-              Link one Booking ID to multiple rented vehicles and assign up to 2 independent riders per bike.
+            <p className="text-xs sm:text-sm text-[#8E8E93] mt-1">
+              Link one Booking ID to rented vehicles with independent rider verification
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start sm:self-auto">
-            <div className="px-3.5 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-right">
-              <span className="text-[10px] uppercase tracking-wider text-neutral-500 block">Session Vehicles</span>
-              <span className="text-sm font-mono font-bold text-orange-400">
-                {session.vehicles.length} {session.vehicles.length === 1 ? 'Unit' : 'Units'}
-              </span>
-            </div>
+          <div className="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-[#1C1C1E] border border-white/[0.08] text-right">
+            <span className="text-[10px] uppercase tracking-wider text-[#8E8E93] block">Allocated</span>
+            <span className="text-xs font-mono font-bold text-[#FF9500]">
+              {session.vehicles.length} {session.vehicles.length === 1 ? 'Vehicle' : 'Vehicles'}
+            </span>
           </div>
         </div>
 
@@ -50,29 +48,24 @@ export default function CreateRentalSessionPage() {
         </section>
 
         {/* Section 2: Vehicles & Riders List */}
-        <section aria-label="Vehicle and Rider Allocations" className="space-y-4">
+        <section aria-label="Vehicle and Rider Allocations" className="space-y-3.5">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
-                <Bike className="w-4 h-4" />
+              <div className="w-6 h-6 rounded-lg bg-[#FF9500]/12 flex items-center justify-center text-[#FF9500]">
+                <Bike className="w-3.5 h-3.5" />
               </div>
-              <div>
-                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  Allocated Vehicles & Riders
-                </h2>
-                <p className="text-xs text-neutral-400">
-                  Each vehicle can have up to 2 riders with mandatory DigiLocker verification
-                </p>
-              </div>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-[#8E8E93]">
+                Vehicles & Riders
+              </h2>
             </div>
 
-            <span className="text-xs font-mono text-neutral-500">
-              {session.vehicles.length} {session.vehicles.length === 1 ? 'card' : 'cards'}
+            <span className="text-[11px] font-medium text-[#8E8E93]">
+              Up to 2 riders per bike
             </span>
           </div>
 
           {/* Vehicle Cards Grid */}
-          <div className="space-y-5">
+          <div className="space-y-4">
             {session.vehicles.map((vehicle, index) => (
               <VehicleCard
                 key={vehicle.id}
@@ -83,14 +76,14 @@ export default function CreateRentalSessionPage() {
             ))}
           </div>
 
-          {/* Multiple Vehicle Button */}
-          <div className="pt-2">
+          {/* Add Vehicle Action */}
+          <div className="pt-1">
             <AddVehicleButton />
           </div>
         </section>
       </main>
 
-      {/* Sticky Bottom Action Button */}
+      {/* Sticky Bottom Action Dock */}
       <ContinueButton />
     </div>
   );

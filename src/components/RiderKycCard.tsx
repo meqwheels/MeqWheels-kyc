@@ -23,7 +23,6 @@ export function RiderKycCard({
   const { verifyRider, resetRiderVerification } = useRental();
   const { rider, vehicleId, vehicleNumber, customerId } = item;
 
-  // Determine Customer ID and Booking ID accurately
   const displayCustomerId = item.customerSpecificId
     ? item.customerSpecificId
     : /-\d+$/.test(customerId)
@@ -61,32 +60,32 @@ export function RiderKycCard({
 
   return (
     <div
-      className={`glass-panel p-6 relative overflow-hidden transition-all duration-300 ${
+      className={`rounded-2xl p-5 sm:p-5.5 space-y-4 transition-all duration-200 ${
         isVerified
-          ? 'border-emerald-500/30 bg-emerald-950/10 shadow-[0_0_25px_-5px_rgba(16,185,129,0.12)]'
-          : 'hover:border-white/20'
+          ? 'bg-[#1C1C1E] border border-[#34C759]/30'
+          : 'bg-[#1C1C1E] border border-white/[0.08]'
       }`}
     >
-      {/* Top Card Bar: Card Index & Linked Customer */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06] mb-5">
+      {/* Top Bar: Card & Rider Index */}
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <span className="flex items-center justify-center w-7 h-7 rounded-xl bg-white/[0.04] text-xs font-mono font-bold text-neutral-300 border border-white/[0.08]">
+          <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-[#2C2C2E] text-[11px] font-mono font-semibold text-white">
             0{cardIndex + 1}
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-            Card {cardIndex + 1}
+          <span className="text-xs font-semibold text-white">
+            Rider {item.globalRiderNumber ?? cardIndex + 1}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
-            Booking: {displayBookingId}
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#2C2C2E] text-[#8E8E93]">
+            {displayBookingId}
           </span>
           {isVerified && (
             <button
               onClick={handleReset}
               title="Reset verification for demo"
-              className="text-neutral-500 hover:text-neutral-300 text-xs p-1 hover:bg-white/5 rounded transition-colors"
+              className="text-[#8E8E93] hover:text-white text-xs p-1 hover:bg-white/10 rounded-md transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
             </button>
@@ -94,85 +93,75 @@ export function RiderKycCard({
         </div>
       </div>
 
-      {/* Card Details: Vehicle, Rider, Phone, Status */}
-      <div className="space-y-4 mb-6">
-        {/* Vehicle */}
+      {/* Main Details */}
+      <div className="space-y-2.5 text-xs">
+        {/* Rider Name */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Vehicle:</span>
-          <span className="font-mono font-bold text-sm tracking-wider text-white px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/[0.08]">
-            {vehicleNumber || 'NOT ASSIGNED'}
+          <span className="text-[#8E8E93]">Rider Name</span>
+          <span className="text-sm font-semibold text-white">
+            {rider.name || 'Unnamed Rider'}
           </span>
         </div>
 
-        {/* Rider */}
+        {/* Assigned Vehicle */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Rider:</span>
-          <div className="flex items-center gap-1.5 text-right">
-            <User className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="font-semibold text-sm text-white">
-              {rider.name || 'Unnamed Rider'}
-            </span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-400 font-medium">
-              Rider {item.globalRiderNumber ?? cardIndex + 1}
-            </span>
-          </div>
+          <span className="text-[#8E8E93]">Assigned Vehicle</span>
+          <span className="font-mono font-semibold text-xs tracking-wider text-white px-2 py-0.5 rounded-md bg-[#2C2C2E]">
+            {vehicleNumber || 'UNASSIGNED'}
+          </span>
         </div>
 
         {/* Phone */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Phone:</span>
-          <div className="flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="font-mono text-sm text-neutral-300">
-              {rider.phone ? `+91 ${rider.phone}` : 'N/A'}
-            </span>
-          </div>
+          <span className="text-[#8E8E93]">Mobile</span>
+          <span className="font-mono text-white">
+            {rider.phone ? `+91 ${rider.phone}` : 'N/A'}
+          </span>
         </div>
 
         {/* Customer ID */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Customer ID:</span>
-          <span className="font-mono font-bold text-xs tracking-wider text-orange-400 px-2.5 py-1 rounded-lg bg-orange-500/10 border border-orange-500/25 shadow-sm">
+          <span className="text-[#8E8E93]">Customer ID</span>
+          <span className="font-mono font-medium text-[11px] text-[#FF9500] px-2 py-0.5 rounded-md bg-[#FF9500]/10">
             {displayCustomerId}
           </span>
         </div>
 
-
         {/* Status */}
         <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
-          <span className="text-xs font-medium text-neutral-400">Status:</span>
+          <span className="text-[#8E8E93]">Status</span>
           <div>
             {isPending && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                Pending
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#FF9500]/12 text-[#FF9500] border border-[#FF9500]/25">
+                <Clock className="w-3 h-3" />
+                <span>Pending</span>
               </span>
             )}
             {isVerifying && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/30">
-                <Loader2 className="w-3 h-3 animate-spin text-orange-400" />
-                Verifying...
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#FF9500]/12 text-[#FF9500] border border-[#FF9500]/25">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                <span>Verifying...</span>
               </span>
             )}
             {isVerified && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                Verified
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#34C759]/12 text-[#34C759] border border-[#34C759]/25">
+                <CheckCircle2 className="w-3 h-3" />
+                <span>Verified</span>
               </span>
             )}
           </div>
         </div>
       </div>
 
-      {/* Button: Complete KYC or Disabled Verified */}
-      <div>
+      {/* Button: Complete KYC or Completed */}
+      <div className="pt-1">
         {isPending && (
           <button
             type="button"
             onClick={handleVerify}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 transition-all duration-200 cursor-pointer active:scale-[0.99]"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#FF9500] hover:bg-[#FF9500]/90 text-white font-semibold text-xs tracking-wide shadow-sm ios-pressable cursor-pointer"
           >
-            <ShieldCheck className="w-4 h-4" />
+            <ShieldCheck className="w-3.5 h-3.5" />
             <span>Complete KYC</span>
           </button>
         )}
@@ -181,9 +170,9 @@ export function RiderKycCard({
           <button
             type="button"
             disabled
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-neutral-800/80 text-orange-400 font-semibold text-xs sm:text-sm border border-orange-500/20 cursor-wait"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#2C2C2E] text-[#8E8E93] font-medium text-xs cursor-wait"
           >
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
             <span>Connecting DigiLocker...</span>
           </button>
         )}
@@ -192,9 +181,9 @@ export function RiderKycCard({
           <button
             type="button"
             disabled
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 text-emerald-400 font-semibold text-xs sm:text-sm border border-emerald-500/20 cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#34C759]/12 text-[#34C759] border border-[#34C759]/25 font-medium text-xs cursor-default"
           >
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-3.5 h-3.5" />
             <span>KYC Completed</span>
           </button>
         )}
@@ -202,9 +191,9 @@ export function RiderKycCard({
 
       {/* Footer Info for Verified */}
       {isVerified && rider.referenceId && (
-        <div className="mt-3 flex items-center justify-between text-[10px] text-neutral-500 font-mono">
+        <div className="flex items-center justify-between text-[10px] text-[#636366] font-mono pt-0.5">
           <span>Ref: {rider.referenceId}</span>
-          <span>Verified {rider.verifiedAt}</span>
+          <span>{rider.verifiedAt}</span>
         </div>
       )}
     </div>

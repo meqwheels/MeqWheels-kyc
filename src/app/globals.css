@@ -1,106 +1,151 @@
 @import "tailwindcss";
 
 :root {
-  --background: #08080C;
-  --foreground: #F3F4F6;
-  --brand-orange: #F97316;
-  --brand-orange-hover: #EA580C;
-  --brand-orange-glow: rgba(249, 115, 22, 0.25);
-  --card-bg: rgba(18, 18, 24, 0.72);
+  --system-background: #000000;
+  --secondary-grouped-background: #1C1C1E;
+  --tertiary-grouped-background: #2C2C2E;
+  --quaternary-grouped-background: #3A3A3C;
+  --separator: rgba(255, 255, 255, 0.1);
+  --separator-opaque: #38383A;
+  
+  /* Apple System Colors */
+  --system-orange: #FF9500;
+  --system-orange-hover: #E08500;
+  --system-green: #34C759;
+  --system-red: #FF3B30;
+  --system-blue: #0A84FF;
+  
+  /* System Gray Scale */
+  --label-primary: #FFFFFF;
+  --label-secondary: #8E8E93;
+  --label-tertiary: #636366;
+  --label-quaternary: #48484A;
+  
+  /* Legacy token mapping for backward safety */
+  --background: #000000;
+  --foreground: #F5F5F7;
+  --card-bg: rgba(28, 28, 30, 0.82);
   --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-highlight: rgba(249, 115, 22, 0.35);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--system-background);
+  color: var(--label-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(249, 115, 22, 0.12), transparent 70%),
-    radial-gradient(circle at 10% 80%, rgba(249, 115, 22, 0.04), transparent 40%),
-    radial-gradient(circle at 90% 40%, rgba(59, 130, 246, 0.03), transparent 40%);
-  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for dark UI */
+/* Subtle iOS-style scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 15, 20, 0.8);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.6);
+  background: rgba(255, 255, 255, 0.28);
 }
 
-/* Glassmorphism card utilities */
+/* Apple iOS Inset Grouped Card */
 .glass-panel {
-  background: var(--card-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
+  background: rgba(28, 28, 30, 0.78);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .glass-panel-glow {
-  background: var(--card-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--card-border-highlight);
-  box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.15);
-  border-radius: 24px;
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
 }
 
+/* iOS System Text Field */
 .glass-input {
-  background: rgba(10, 10, 15, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  color: #ffffff;
-  border-radius: 14px;
+  background: rgba(44, 44, 46, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.2s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  color: #FFFFFF;
+  border-radius: 12px;
+  min-height: 44px;
 }
 
 .glass-input:focus {
   outline: none;
-  border-color: #F97316;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2), 0 0 16px rgba(249, 115, 22, 0.1);
-  background: rgba(15, 15, 22, 0.95);
+  border-color: var(--system-orange);
+  background: rgba(44, 44, 46, 0.95);
+  box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.18);
 }
 
 .glass-input:hover:not(:focus) {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Shimmer animation */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+/* iOS Spring Tap feel */
+.ios-pressable {
+  transition: transform 0.15s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.15s ease;
+}
+.ios-pressable:active {
+  transform: scale(0.98);
+  opacity: 0.88;
 }
 
-.shimmer-badge {
+/* iOS Native Switch Toggle */
+.ios-switch {
   position: relative;
-  overflow: hidden;
+  display: inline-block;
+  width: 51px;
+  height: 31px;
 }
 
-.shimmer-badge::after {
-  content: '';
+.ios-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ios-slider {
   position: absolute;
+  cursor: pointer;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 3s infinite;
+  background-color: #39393D;
+  transition: 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  border-radius: 31px;
+}
+
+.ios-slider:before {
+  position: absolute;
+  content: "";
+  height: 27px;
+  width: 27px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+input:checked + .ios-slider {
+  background-color: var(--system-green);
+}
+
+input:checked + .ios-slider:before {
+  transform: translateX(20px);
 }
