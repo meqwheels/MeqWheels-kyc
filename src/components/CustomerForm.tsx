@@ -3,6 +3,7 @@
 import React from 'react';
 import { User, Phone, Hash } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
+import { capitalizeName } from '@/utils/format';
 
 export function CustomerForm() {
   const { session, updateCustomer } = useRental();
@@ -85,8 +86,9 @@ export function CustomerForm() {
             <input
               id="customerName"
               type="text"
+              autoCapitalize="words"
               value={session.customerName}
-              onChange={(e) => updateCustomer('customerName', e.target.value)}
+              onChange={(e) => updateCustomer('customerName', capitalizeName(e.target.value))}
               placeholder="e.g. Rahul Patil"
               className="w-full glass-input px-3.5 py-2.5 text-sm placeholder:text-[#636366] text-white"
               required

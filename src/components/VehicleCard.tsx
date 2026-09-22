@@ -4,6 +4,7 @@ import React from 'react';
 import { Trash2, UserCheck, Shield } from 'lucide-react';
 import { Vehicle } from '@/types/kyc';
 import { useRental } from '@/context/RentalContext';
+import { capitalizeName } from '@/utils/format';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -131,8 +132,9 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
               <input
                 id={`r1-name-${vehicle.id}`}
                 type="text"
+                autoCapitalize="words"
                 value={vehicle.rider1.name}
-                onChange={(e) => updateRider(vehicle.id, 1, 'name', e.target.value)}
+                onChange={(e) => updateRider(vehicle.id, 1, 'name', capitalizeName(e.target.value))}
                 placeholder="e.g. Rahul Patil"
                 className="w-full glass-input px-3 py-2 text-sm placeholder:text-[#636366] text-white"
                 required
@@ -209,8 +211,9 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
                 <input
                   id={`r2-name-${vehicle.id}`}
                   type="text"
+                  autoCapitalize="words"
                   value={vehicle.rider2?.name || ''}
-                  onChange={(e) => updateRider(vehicle.id, 2, 'name', e.target.value)}
+                  onChange={(e) => updateRider(vehicle.id, 2, 'name', capitalizeName(e.target.value))}
                   placeholder="e.g. Amit Sharma"
                   className="w-full glass-input px-3 py-2 text-sm placeholder:text-[#636366] text-white"
                   required

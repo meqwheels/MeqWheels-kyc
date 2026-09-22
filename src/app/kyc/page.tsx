@@ -123,7 +123,7 @@ export default function RiderKycPage() {
                     All Riders Verified
                   </h3>
                   <p className="text-xs text-[#8E8E93] mt-0.5">
-                    Rental agreement authorized for all {total} riders.
+                    Rental agreement authorized by DigiLocker for all {total} riders.
                   </p>
                 </div>
               </div>

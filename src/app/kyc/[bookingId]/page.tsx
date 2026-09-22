@@ -246,7 +246,7 @@ export default function BookingKycPage() {
         {loading && (
           <div className="bg-[#1C1C1E] rounded-2xl border border-white/[0.08] p-12 flex flex-col items-center justify-center space-y-3">
             <Loader2 className="w-7 h-7 text-[#FF9500] animate-spin" />
-            <p className="text-[#8E8E93] text-xs">Loading KYC records from Cloudflare D1...</p>
+            <p className="text-[#8E8E93] text-xs">Loading KYC records...</p>
           </div>
         )}
 
@@ -305,7 +305,7 @@ export default function BookingKycPage() {
                         All Riders Verified Successfully
                       </h3>
                       <p className="text-xs text-[#8E8E93] mt-0.5">
-                        Rental agreement authorized in Cloudflare D1. All {total} riders have verified credentials.
+                        Rental agreement authorized by DigiLocker for all {total} riders.
                       </p>
                     </div>
                   </div>
@@ -376,7 +376,7 @@ export default function BookingKycPage() {
       {/* Footer info bar */}
       <footer className="border-t border-white/[0.08] bg-black py-4 px-4 text-center text-xs text-[#636366]">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1">
-          <span>MEQ WHEELS • Government DigiLocker Compliance Engine (Cloudflare D1)</span>
+          <span>MEQ WHEELS • Government DigiLocker Compliance Engine</span>
           <span className="font-mono text-[11px]">Booking ID: {bookingId}</span>
         </div>
       </footer>

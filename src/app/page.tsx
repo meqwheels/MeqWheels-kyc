@@ -29,9 +29,6 @@ export default function CreateRentalSessionPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Create Rental Session
             </h1>
-            <p className="text-xs sm:text-sm text-[#8E8E93] mt-1">
-              Link one Booking ID to rented vehicles with independent rider verification
-            </p>
           </div>
 
           <div className="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-[#1C1C1E] border border-white/[0.08] text-right">
