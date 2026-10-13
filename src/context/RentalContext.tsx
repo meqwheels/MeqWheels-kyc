@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { CustomerSession, Vehicle, Rider, FlattenedRiderKYC } from '@/types/kyc';
+import { capitalizeName } from '@/utils/format';
 
 function getCurrentYear(): number {
   return new Date().getFullYear();
@@ -79,18 +80,19 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
   // Update customer and automatically sync Customer Name & Phone into Vehicle 1 Primary Rider
   // Also resets KYC status to pending for any modified rider/customer
   const updateCustomer = useCallback((field: 'customerId' | 'customerName' | 'phoneNumber', value: string) => {
+    const formattedValue = field === 'customerName' ? capitalizeName(value) : value;
     setSession((prev) => {
       let updatedVehicles = prev.vehicles;
 
       if (field === 'customerName') {
         updatedVehicles = prev.vehicles.map((v, index) => {
           if (index === 0) {
-            const hasChanged = v.rider1.name !== value;
+            const hasChanged = v.rider1.name !== formattedValue;
             return {
               ...v,
               rider1: {
                 ...v.rider1,
-                name: value,
+                name: formattedValue,
                 ...(hasChanged ? { kycStatus: 'pending' as const, verifiedAt: undefined, referenceId: undefined } : {}),
               },
             };
@@ -128,7 +130,7 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
 
       return {
         ...prev,
-        [field]: value,
+        [field]: formattedValue,
         vehicles: updatedVehicles,
         updatedAt: new Date().toISOString(),
       };
@@ -206,28 +208,29 @@ export function RentalProvider({ children }: { children: React.ReactNode }) {
 
   const updateRider = useCallback(
     (vehicleId: string, riderNumber: 1 | 2, field: 'name' | 'phone', value: string) => {
+      const formattedValue = field === 'name' ? capitalizeName(value) : value;
       setSession((prev) => ({
         ...prev,
         vehicles: prev.vehicles.map((v) => {
           if (v.id !== vehicleId) return v;
           if (riderNumber === 1) {
-            const hasChanged = v.rider1[field] !== value;
+            const hasChanged = v.rider1[field] !== formattedValue;
             return {
               ...v,
               rider1: {
                 ...v.rider1,
-                [field]: value,
+                [field]: formattedValue,
                 ...(hasChanged ? { kycStatus: 'pending' as const, verifiedAt: undefined, referenceId: undefined } : {}),
               },
             };
           } else {
-            const hasChanged = v.rider2?.[field] !== value;
+            const hasChanged = v.rider2?.[field] !== formattedValue;
             return {
               ...v,
               rider2: v.rider2
                 ? {
                     ...v.rider2,
-                    [field]: value,
+                    [field]: formattedValue,
                     ...(hasChanged ? { kycStatus: 'pending' as const, verifiedAt: undefined, referenceId: undefined } : {}),
                   }
                 : undefined,

@@ -35,4 +35,7 @@ export interface FlattenedRiderKYC {
   globalRiderNumber?: number;
   customerName: string;
   customerId: string;
+  bookingId?: string;
+  customerSpecificId?: string;
 }
+
