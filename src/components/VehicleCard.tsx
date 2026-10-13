@@ -41,11 +41,16 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
   };
 
   return (
-    <div className="glass-panel p-5 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15">
-      {/* Vengeance UI subtle border beam on active primary vehicle */}
-      {index === 0 && (
-        <BorderBeam size={220} duration={18} colorFrom="#F97316" colorTo="#E11D48" borderWidth={1.5} />
-      )}
+    <div className="glass-panel p-5 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      {/* Vengeance UI subtle border beam on all vehicle cards */}
+      <BorderBeam
+        size={220}
+        duration={18}
+        delay={index * 2}
+        colorFrom="#F97316"
+        colorTo="#E11D48"
+        borderWidth={1.5}
+      />
 
       {/* Top Header for Vehicle Card */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.06] mb-6 relative z-10">
