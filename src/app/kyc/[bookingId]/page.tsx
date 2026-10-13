@@ -5,8 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { KycProgressBar } from '@/components/KycProgressBar';
 import { RiderKycCard } from '@/components/RiderKycCard';
+import { KycConsentModal } from '@/components/KycConsentModal';
 import { FlattenedRiderKYC } from '@/types/kyc';
 import {
   ChevronLeft,
@@ -17,6 +19,9 @@ import {
   RotateCcw,
   Sparkles,
 } from 'lucide-react';
+import { AnimatedRays } from '@/components/ui/animated-rays';
+import { BorderBeam } from '@/components/ui/border-beam';
+import { AnimatedButton } from '@/components/ui/animated-button';
 
 interface D1KycRecord {
   bookingId: string;
@@ -47,6 +52,15 @@ export default function BookingKycPage() {
   const [verifyingIds, setVerifyingIds] = useState<Set<string>>(new Set());
   const [isSimulatingAll, setIsSimulatingAll] = useState(false);
   const [confettiTriggered, setConfettiTriggered] = useState(false);
+  const [consentModalState, setConsentModalState] = useState<{
+    isOpen: boolean;
+    riderName: string;
+    customerId: string;
+  }>({
+    isOpen: false,
+    riderName: '',
+    customerId: '',
+  });
 
   // Fetch booking records from Cloudflare D1
   const loadBooking = useCallback(async () => {
@@ -131,6 +145,15 @@ export default function BookingKycPage() {
     }
   };
 
+  const handleInitiateVerify = (customerId: string) => {
+    const rider = records.find((r) => r.customerId === customerId);
+    setConsentModalState({
+      isOpen: true,
+      riderName: rider?.name || 'Rider',
+      customerId,
+    });
+  };
+
   const handleReset = async (customerId: string) => {
     try {
       const res = await fetch('/api/booking/verify', {
@@ -196,8 +219,14 @@ export default function BookingKycPage() {
   }));
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-[#F5F5F7]">
-      <Header />
+    <div className="flex flex-col min-h-screen bg-[#08080C] text-[#F5F5F7] antialiased relative">
+      {/* Animated Rays Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <AnimatedRays fullPage className="w-full h-full opacity-45" />
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7">
         {/* Navigation & Title */}
@@ -292,10 +321,17 @@ export default function BookingKycPage() {
               />
             </section>
 
-            {/* Success Confirmation Card */}
+            {/* Success Confirmation Card with Vengeance UI BorderBeam */}
             {allVerified && (
-              <div className="p-5 sm:p-6 rounded-2xl bg-[#34C759]/10 border border-[#34C759]/25 animate-in fade-in duration-300">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#1C1C1E] border border-[#34C759]/30 shadow-[0_4px_24px_rgba(52,199,89,0.12)] animate-in fade-in duration-300 relative overflow-hidden">
+                <BorderBeam
+                  size={260}
+                  duration={12}
+                  colorFrom="#34C759"
+                  colorTo="#30D158"
+                  borderWidth={1.5}
+                />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
                   <div className="flex items-center gap-3.5">
                     <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#34C759]/20 text-[#34C759]">
                       <CheckCircle2 className="w-6 h-6" />
@@ -311,20 +347,28 @@ export default function BookingKycPage() {
                   </div>
 
                   <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                    <button
+                    <AnimatedButton
                       type="button"
                       onClick={() => window.print()}
                       className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#1C1C1E] hover:bg-[#2C2C2E] text-white text-xs font-semibold border border-white/10 transition-colors ios-pressable cursor-pointer"
                     >
-                      <Printer className="w-3.5 h-3.5" />
-                      <span>Print Gate Pass</span>
-                    </button>
+                      <span className="flex items-center justify-center gap-2 text-white">
+                        <Printer className="w-3.5 h-3.5" />
+                        <span>Print Gate Pass</span>
+                      </span>
+                    </AnimatedButton>
                     <Link
                       href="/"
-                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#34C759] hover:bg-[#34C759]/90 text-white font-semibold text-xs transition-colors ios-pressable cursor-pointer"
+                      className="flex-1 sm:flex-initial"
                     >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>New Rental</span>
+                      <AnimatedButton
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#34C759] hover:bg-[#34C759]/90 text-white font-semibold text-xs border border-white/10 transition-colors ios-pressable cursor-pointer"
+                      >
+                        <span className="flex items-center justify-center gap-2 text-white">
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>New Rental</span>
+                        </span>
+                      </AnimatedButton>
                     </Link>
                   </div>
                 </div>
@@ -361,7 +405,7 @@ export default function BookingKycPage() {
                       key={item.uniqueKey}
                       item={item}
                       cardIndex={index}
-                      onVerify={handleVerify}
+                      onVerify={handleInitiateVerify}
                       onReset={handleReset}
                       isVerifying={verifyingIds.has(item.customerId)}
                     />
@@ -369,17 +413,25 @@ export default function BookingKycPage() {
                 </div>
               )}
             </section>
+
+            {/* Dedicated KYC Consent Step Modal */}
+            <KycConsentModal
+              isOpen={consentModalState.isOpen}
+              onClose={() => setConsentModalState((prev) => ({ ...prev, isOpen: false }))}
+              riderName={consentModalState.riderName}
+              customerId={consentModalState.customerId}
+              bookingId={bookingId}
+              onConsentGranted={async () => {
+                await handleVerify(consentModalState.customerId);
+              }}
+            />
           </>
         )}
       </main>
 
-      {/* Footer info bar */}
-      <footer className="border-t border-white/[0.08] bg-black py-4 px-4 text-center text-xs text-[#636366]">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1">
-          <span>MEQ WHEELS • Government DigiLocker Compliance Engine</span>
-          <span className="font-mono text-[11px]">Booking ID: {bookingId}</span>
-        </div>
-      </footer>
+        {/* Global Compliance Footer */}
+        <Footer bookingId={bookingId} />
+      </div>
     </div>
   );
 }

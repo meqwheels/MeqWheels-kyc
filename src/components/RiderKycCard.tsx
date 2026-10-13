@@ -50,36 +50,64 @@ export function RiderKycCard({
 
   return (
     <div
-      className={`glass-panel p-6 relative overflow-hidden transition-all duration-300 ${
+      className={`bg-[#1C1C1E] border rounded-2xl p-5 sm:p-6 relative overflow-hidden transition-all duration-300 ${
         isVerified
-          ? 'border-emerald-500/30 bg-emerald-950/10 shadow-[0_0_25px_-5px_rgba(16,185,129,0.12)]'
-          : 'hover:border-white/20'
+          ? 'border-[#34C759]/40 shadow-[0_4px_24px_rgba(52,199,89,0.12)]'
+          : isVerifying
+          ? 'border-[#0A84FF]/40 shadow-[0_4px_24px_rgba(10,132,255,0.12)]'
+          : 'border-white/[0.08] hover:border-white/[0.18]'
       }`}
     >
-      {/* Vengeance UI Glowing Border Beam for Verified Rider */}
+      {/* Vengeance UI dynamic border beam effect based on verification status */}
       {isVerified && (
-        <BorderBeam size={200} duration={8} colorFrom="#10B981" colorTo="#34D399" borderWidth={1.5} />
+        <BorderBeam
+          size={240}
+          duration={14}
+          colorFrom="#34C759"
+          colorTo="#30D158"
+          borderWidth={1.5}
+        />
       )}
+      {isVerifying && (
+        <BorderBeam
+          size={240}
+          duration={8}
+          colorFrom="#0A84FF"
+          colorTo="#5856D6"
+          borderWidth={1.5}
+        />
+      )}
+      {isPending && (
+        <BorderBeam
+          size={240}
+          duration={16}
+          delay={cardIndex * 1.5}
+          colorFrom="#FF9500"
+          colorTo="#FF2D55"
+          borderWidth={1.5}
+        />
+      )}
+
       {/* Top Card Bar: Card Index & Linked Customer */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06] mb-5">
+      <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.06] mb-4 relative z-10">
         <div className="flex items-center gap-2">
-          <span className="flex items-center justify-center w-7 h-7 rounded-xl bg-white/[0.04] text-xs font-mono font-bold text-neutral-300 border border-white/[0.08]">
+          <span className="flex items-center justify-center w-7 h-7 rounded-xl bg-[#2C2C2E] text-xs font-mono font-semibold text-white">
             0{cardIndex + 1}
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#8E8E93]">
             Card {cardIndex + 1}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded-lg bg-white/[0.04] text-[#8E8E93] border border-white/[0.06]">
             Booking: {item.bookingId || customerId}
           </span>
           {isVerified && (
             <button
               onClick={handleReset}
               title="Reset verification for demo"
-              className="text-neutral-500 hover:text-neutral-300 text-xs p-1 hover:bg-white/5 rounded transition-colors"
+              className="text-[#8E8E93] hover:text-white text-xs p-1 hover:bg-white/5 rounded-lg transition-colors ios-pressable cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
             </button>
@@ -87,25 +115,25 @@ export function RiderKycCard({
         </div>
       </div>
 
-      {/* Card Details: Vehicle, Rider, Phone, Status */}
-      <div className="space-y-4 mb-6">
+      {/* Card Details: Inset Grouped style */}
+      <div className="space-y-3.5 mb-5 text-xs sm:text-sm relative z-10">
         {/* Vehicle */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Vehicle:</span>
-          <span className="font-mono font-bold text-sm tracking-wider text-white px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/[0.08]">
+          <span className="text-xs font-normal text-[#8E8E93]">Vehicle:</span>
+          <span className="font-mono font-semibold text-xs sm:text-sm tracking-wider text-white px-2.5 py-1 rounded-lg bg-[#2C2C2E] border border-white/[0.06]">
             {vehicleNumber || 'NOT ASSIGNED'}
           </span>
         </div>
 
         {/* Rider */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Rider:</span>
+          <span className="text-xs font-normal text-[#8E8E93]">Rider:</span>
           <div className="flex items-center gap-1.5 text-right">
-            <User className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="font-semibold text-sm text-white">
+            <User className="w-3.5 h-3.5 text-[#8E8E93]" />
+            <span className="font-semibold text-xs sm:text-sm text-white">
               {rider.name || 'Unnamed Rider'}
             </span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-400 font-medium">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-white/[0.06] text-[#8E8E93] font-medium">
               Rider {item.globalRiderNumber ?? cardIndex + 1}
             </span>
           </div>
@@ -113,42 +141,42 @@ export function RiderKycCard({
 
         {/* Phone */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Phone:</span>
+          <span className="text-xs font-normal text-[#8E8E93]">Phone:</span>
           <div className="flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="font-mono text-sm text-neutral-300">
+            <Phone className="w-3.5 h-3.5 text-[#8E8E93]" />
+            <span className="font-mono text-xs sm:text-sm text-[#E5E5EA]">
               {rider.phone ? `+91 ${rider.phone}` : 'N/A'}
             </span>
           </div>
         </div>
 
-        {/* Customer ID (Derived from Booking ID + Rider number) */}
+        {/* Customer ID */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-neutral-400">Customer ID:</span>
-          <span className="font-mono font-bold text-xs tracking-wider text-orange-400 px-2.5 py-1 rounded-lg bg-orange-500/10 border border-orange-500/25 shadow-sm">
+          <span className="text-xs font-normal text-[#8E8E93]">Customer ID:</span>
+          <span className="font-mono font-medium text-xs text-[#0A84FF] px-2 py-0.5 rounded-md bg-[#0A84FF]/10 border border-[#0A84FF]/20">
             {item.customerSpecificId || (customerId?.trim() ? `${customerId.trim()}${item.globalRiderNumber ?? cardIndex + 1}` : `MEQ-${new Date().getFullYear()}-00001${item.globalRiderNumber ?? cardIndex + 1}`)}
           </span>
         </div>
 
         {/* Status */}
-        <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
-          <span className="text-xs font-medium text-neutral-400">Status:</span>
+        <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
+          <span className="text-xs font-normal text-[#8E8E93]">Status:</span>
           <div>
             {isPending && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#FF9500]/15 text-[#FF9500] border border-[#FF9500]/25">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF9500]" />
                 Pending
               </span>
             )}
             {isVerifying && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/30">
-                <Loader2 className="w-3 h-3 animate-spin text-orange-400" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0A84FF]/15 text-[#0A84FF] border border-[#0A84FF]/25">
+                <Loader2 className="w-3 h-3 animate-spin text-[#0A84FF]" />
                 Verifying...
               </span>
             )}
             {isVerified && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#34C759]/15 text-[#34C759] border border-[#34C759]/25">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#34C759]" />
                 Verified
               </span>
             )}
@@ -157,14 +185,15 @@ export function RiderKycCard({
       </div>
 
       {/* Button: Complete KYC or Disabled Verified */}
-      <div>
+      <div className="relative z-10">
         {isPending && (
           <AnimatedButton
+            type="button"
             onClick={handleVerify}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 border-orange-400/30 cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#FF9500] hover:bg-[#FF9F0A] text-black font-semibold text-xs sm:text-sm tracking-tight shadow-sm border border-white/10 ios-pressable flex items-center justify-center gap-2 cursor-pointer min-h-[42px]"
           >
-            <span className="flex items-center justify-center gap-2">
-              <ShieldCheck className="w-4 h-4" />
+            <span className="flex items-center justify-center gap-2 text-black">
+              <ShieldCheck className="w-4 h-4 text-black" />
               <span>Complete DigiLocker KYC</span>
             </span>
           </AnimatedButton>
@@ -174,28 +203,24 @@ export function RiderKycCard({
           <button
             type="button"
             disabled
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-neutral-800/80 text-orange-400 font-semibold text-xs sm:text-sm border border-orange-500/20 cursor-wait"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#2C2C2E] text-[#8E8E93] font-medium text-xs sm:text-sm border border-white/[0.06] cursor-wait min-h-[42px]"
           >
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader2 className="w-4 h-4 animate-spin text-[#0A84FF]" />
             <span>Connecting DigiLocker...</span>
           </button>
         )}
 
         {isVerified && (
-          <button
-            type="button"
-            disabled
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 text-emerald-400 font-semibold text-xs sm:text-sm border border-emerald-500/20 cursor-not-allowed"
-          >
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#34C759]/15 text-[#34C759] font-medium text-xs sm:text-sm border border-[#34C759]/25 min-h-[42px]">
+            <CheckCircle2 className="w-4 h-4 text-[#34C759]" />
             <span>KYC Completed</span>
-          </button>
+          </div>
         )}
       </div>
 
       {/* Footer Info for Verified */}
       {isVerified && rider.referenceId && (
-        <div className="mt-3 flex items-center justify-between text-[10px] text-neutral-500 font-mono">
+        <div className="mt-3 flex items-center justify-between text-[10px] text-[#8E8E93] font-mono">
           <span>Ref: {rider.referenceId}</span>
           <span>Verified {rider.verifiedAt}</span>
         </div>

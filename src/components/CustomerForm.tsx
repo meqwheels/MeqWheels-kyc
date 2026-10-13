@@ -27,38 +27,35 @@ export function CustomerForm() {
   };
 
   return (
-    <div className="glass-panel p-6 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15">
+    <div className="bg-[#1C1C1E] border border-white/[0.08] rounded-2xl p-6 sm:p-7 relative overflow-hidden transition-all duration-300">
       {/* Vengeance UI Border Beam accent */}
-      <BorderBeam size={180} duration={14} colorFrom="#F97316" colorTo="#FB923C" borderWidth={1.5} />
-
-      {/* Subtle top accent gradient */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
+      <BorderBeam size={200} duration={16} colorFrom="#FF9500" colorTo="#FF2D55" borderWidth={1.5} />
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-5 border-b border-white/[0.06] mb-6">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[#2C2C2E] flex items-center justify-center text-[#FF9500]">
             <User className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white tracking-tight">Customer Information</h2>
-            <p className="text-xs text-neutral-400">Primary booking contact linked to all rented vehicles</p>
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">Customer Information</h2>
+            <p className="text-xs text-[#8E8E93]">Primary booking contact linked to all rented vehicles</p>
           </div>
         </div>
 
-        <span className="self-start sm:self-auto text-[11px] font-mono font-medium px-2.5 py-1 rounded-lg bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
+        <span className="self-start sm:self-auto text-[11px] font-mono font-medium px-2.5 py-1 rounded-lg bg-white/[0.04] text-[#8E8E93] border border-white/[0.06]">
           Step 1 of 2
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Booking ID */}
-        <div className="space-y-2">
-          <label htmlFor="customerIdSuffix" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-            <Hash className="w-3.5 h-3.5 text-orange-400" />
-            Booking ID <span className="text-orange-500">*</span>
+        <div className="space-y-1.5">
+          <label htmlFor="customerIdSuffix" className="text-[11px] font-semibold uppercase tracking-wider text-[#8E8E93] flex items-center gap-1.5">
+            <Hash className="w-3.5 h-3.5 text-[#FF9500]" />
+            Booking ID <span className="text-[#FF9500]">*</span>
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-neutral-400 select-none pointer-events-none tracking-wider bg-white/[0.06] border border-white/[0.08] px-2.5 py-1 rounded-md">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-[#8E8E93] select-none pointer-events-none tracking-wider bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-lg">
               {prefix}
             </span>
             <input
@@ -67,18 +64,18 @@ export function CustomerForm() {
               value={getSuffix(session.customerId)}
               onChange={(e) => handleSuffixChange(e.target.value)}
               placeholder="Enter ID number"
-              className="w-full glass-input pl-[126px] pr-4 py-3 text-sm font-mono tracking-wider placeholder:text-neutral-600 focus:text-white"
+              className="w-full bg-[#2C2C2E]/60 border border-white/[0.08] focus:border-[#FF9500] focus:ring-2 focus:ring-[#FF9500]/20 rounded-xl pl-[126px] pr-4 py-3 text-sm font-mono tracking-wider text-white placeholder:text-[#636366] transition-all min-h-[44px]"
               required
             />
           </div>
-          <p className="text-[11px] text-neutral-500">Fixed prefix: {prefix} (enter any custom number)</p>
+          <p className="text-[11px] text-[#636366]">Fixed prefix: {prefix} (enter custom number)</p>
         </div>
 
         {/* Customer Name */}
-        <div className="space-y-2">
-          <label htmlFor="customerName" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-orange-400" />
-            Customer Name <span className="text-orange-500">*</span>
+        <div className="space-y-1.5">
+          <label htmlFor="customerName" className="text-[11px] font-semibold uppercase tracking-wider text-[#8E8E93] flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-[#FF9500]" />
+            Customer Name <span className="text-[#FF9500]">*</span>
           </label>
           <div className="relative">
             <input
@@ -87,21 +84,21 @@ export function CustomerForm() {
               value={session.customerName}
               onChange={(e) => updateCustomer('customerName', e.target.value)}
               placeholder="e.g. Rahul Patil"
-              className="w-full glass-input px-4 py-3 text-sm placeholder:text-neutral-600 focus:text-white"
+              className="w-full bg-[#2C2C2E]/60 border border-white/[0.08] focus:border-[#FF9500] focus:ring-2 focus:ring-[#FF9500]/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#636366] transition-all min-h-[44px]"
               required
             />
           </div>
-          <p className="text-[11px] text-neutral-500">Auto-populates Vehicle 1 primary rider</p>
+          <p className="text-[11px] text-[#636366]">Auto-populates Vehicle 1 primary rider</p>
         </div>
 
         {/* Phone Number */}
-        <div className="space-y-2">
-          <label htmlFor="phoneNumber" className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5 text-orange-400" />
-            Phone Number <span className="text-orange-500">*</span>
+        <div className="space-y-1.5">
+          <label htmlFor="phoneNumber" className="text-[11px] font-semibold uppercase tracking-wider text-[#8E8E93] flex items-center gap-1.5">
+            <Phone className="w-3.5 h-3.5 text-[#FF9500]" />
+            Phone Number <span className="text-[#FF9500]">*</span>
           </label>
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-neutral-400">
+          <div className="relative flex items-center">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-medium text-[#8E8E93] select-none pointer-events-none">
               +91
             </span>
             <input
@@ -110,15 +107,15 @@ export function CustomerForm() {
               maxLength={10}
               value={session.phoneNumber}
               onChange={(e) => {
-                const numericOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
-                updateCustomer('phoneNumber', numericOnly);
+                const numeric = e.target.value.replace(/\D/g, '');
+                updateCustomer('phoneNumber', numeric);
               }}
               placeholder="9876543210"
-              className="w-full glass-input pl-12 pr-4 py-3 text-sm font-mono placeholder:text-neutral-600 focus:text-white"
+              className="w-full bg-[#2C2C2E]/60 border border-white/[0.08] focus:border-[#FF9500] focus:ring-2 focus:ring-[#FF9500]/20 rounded-xl pl-12 pr-4 py-3 text-sm font-mono tracking-wider text-white placeholder:text-[#636366] transition-all min-h-[44px]"
               required
             />
           </div>
-          <p className="text-[11px] text-neutral-500">Auto-populates Vehicle 1 primary phone</p>
+          <p className="text-[11px] text-[#636366]">10-digit primary contact number</p>
         </div>
       </div>
     </div>

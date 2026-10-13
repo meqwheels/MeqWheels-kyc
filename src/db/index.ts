@@ -120,7 +120,7 @@ export function getDb(): any {
     const dbPath = path.resolve(dbDir, 'd1-local.sqlite');
     const sqlite = new Database(dbPath);
 
-    // Auto-create table matching exact D1 schema if it doesn't exist
+    // Auto-create tables matching exact D1 schema if they don't exist
     sqlite.exec(`
       CREATE TABLE IF NOT EXISTS kyc_records (
         booking_id      TEXT NOT NULL,
@@ -133,6 +133,17 @@ export function getDb(): any {
         dl_no           TEXT,
         dl_file         TEXT,
         kyc_status      TEXT DEFAULT 'PENDING',
+        created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS kyc_consents (
+        id              TEXT PRIMARY KEY,
+        booking_id      TEXT NOT NULL,
+        customer_id     TEXT NOT NULL,
+        rider_name      TEXT NOT NULL,
+        purpose         TEXT NOT NULL,
+        consent_version TEXT NOT NULL,
+        status          TEXT NOT NULL,
         created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
