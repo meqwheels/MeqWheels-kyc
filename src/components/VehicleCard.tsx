@@ -4,6 +4,8 @@ import React from 'react';
 import { Trash2, Plus, Minus, UserCheck, Shield, ChevronDown, ChevronUp } from 'lucide-react';
 import { Vehicle } from '@/types/kyc';
 import { useRental } from '@/context/RentalContext';
+import { BorderBeam } from '@/components/ui/border-beam';
+import { AnimatedTooltip } from '@/components/ui/animated-tooltip';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -40,8 +42,13 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
 
   return (
     <div className="glass-panel p-5 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15">
+      {/* Vengeance UI subtle border beam on active primary vehicle */}
+      {index === 0 && (
+        <BorderBeam size={220} duration={18} colorFrom="#F97316" colorTo="#E11D48" borderWidth={1.5} />
+      )}
+
       {/* Top Header for Vehicle Card */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.06] mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.06] mb-6 relative z-10">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-orange-500/10 text-orange-400 font-mono font-bold text-xs border border-orange-500/25">
             0{index + 1}
@@ -76,7 +83,7 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 relative z-10">
         {/* Vehicle Registration Number */}
         <div className="space-y-2">
           <label
@@ -182,15 +189,19 @@ export function VehicleCard({ vehicle, index, canDelete }: VehicleCardProps) {
         </div>
 
         {/* Add Rider Toggle */}
-        <div className="pt-1">
+        <div className="pt-1 relative z-20">
           {!vehicle.hasSecondRider ? (
             <button
               type="button"
-              onClick={() => toggleSecondRider(vehicle.id, true)}
+              id={`add-rider2-btn-${vehicle.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleSecondRider(vehicle.id, true);
+              }}
               className="w-full group flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 text-orange-400 hover:text-orange-300 text-xs font-semibold tracking-wide transition-all duration-200 cursor-pointer"
             >
               <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
-              <span>+ Add Second Rider (Rider {rider2Number})</span>
+              <span>Add Second Rider (Rider {rider2Number})</span>
             </button>
           ) : (
             /* Rider 2 Section */

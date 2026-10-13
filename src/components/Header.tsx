@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Calendar, Sparkles, RefreshCw, Zap } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
+import { AnimatedTooltip } from '@/components/ui/animated-tooltip';
 
 export function Header() {
   const [currentDate, setCurrentDate] = useState<string>('');
@@ -58,11 +59,19 @@ export function Header() {
 
         {/* Badges, Date & Demo Controls */}
         <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          {/* MSME Registered Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shadow-sm">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>MSME Registered</span>
-          </div>
+          {/* MSME Registered Badge with Vengeance UI Tooltip */}
+          <AnimatedTooltip
+            content="Official MSME Gov Registered Enterprise"
+            variant="smaug"
+            shapeColor="#10B981"
+            textColor="#08080C"
+            className="p-0 inline-flex items-center"
+          >
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shadow-sm cursor-pointer">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>MSME Registered</span>
+            </div>
+          </AnimatedTooltip>
 
           {/* Current Date */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-medium">

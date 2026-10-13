@@ -3,12 +3,34 @@
 :root {
   --background: #08080C;
   --foreground: #F3F4F6;
+  --border: rgba(255, 255, 255, 0.08);
+  --ring: #F97316;
+  --stripe-color: rgba(255, 255, 255, 0.06);
   --brand-orange: #F97316;
   --brand-orange-hover: #EA580C;
   --brand-orange-glow: rgba(249, 115, 22, 0.25);
   --card-bg: rgba(18, 18, 24, 0.72);
   --card-border: rgba(255, 255, 255, 0.08);
   --card-border-highlight: rgba(249, 115, 22, 0.35);
+}
+
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes aurora-bg {
+  0% {
+    background-position: 50% 50%, 50% 50%;
+  }
+  100% {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.animate-aurora-bg {
+  animation: aurora-bg 60s linear infinite;
 }
 
 body {

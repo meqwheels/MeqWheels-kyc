@@ -3,6 +3,7 @@
 import React from 'react';
 import { CheckCircle2, Clock, Sparkles, CheckCheck, RotateCcw } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
+import { AnimatedButton } from '@/components/ui/animated-button';
 
 interface KycProgressBarProps {
   onSimulateAll?: () => void;
@@ -48,15 +49,16 @@ export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarPr
         {/* Quick action controls for staff */}
         <div className="flex items-center gap-2.5">
           {!isComplete && onSimulateAll && (
-            <button
-              type="button"
+            <AnimatedButton
               onClick={onSimulateAll}
               disabled={isSimulating}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-semibold tracking-wide transition-all disabled:opacity-50 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-semibold tracking-wide cursor-pointer disabled:opacity-50"
             >
-              <CheckCheck className="w-3.5 h-3.5" />
-              <span>{isSimulating ? 'Verifying All...' : 'Simulate Verify All'}</span>
-            </button>
+              <span className="flex items-center gap-1.5">
+                <CheckCheck className="w-3.5 h-3.5" />
+                <span>{isSimulating ? 'Verifying All...' : 'Simulate Verify All'}</span>
+              </span>
+            </AnimatedButton>
           )}
 
           <div className="text-right">

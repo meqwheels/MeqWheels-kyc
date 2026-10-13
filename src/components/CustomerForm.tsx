@@ -3,6 +3,7 @@
 import React from 'react';
 import { User, Phone, Hash } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
+import { BorderBeam } from '@/components/ui/border-beam';
 
 export function CustomerForm() {
   const { session, updateCustomer } = useRental();
@@ -27,6 +28,9 @@ export function CustomerForm() {
 
   return (
     <div className="glass-panel p-6 sm:p-7 relative overflow-hidden transition-all duration-300 hover:border-white/15">
+      {/* Vengeance UI Border Beam accent */}
+      <BorderBeam size={180} duration={14} colorFrom="#F97316" colorTo="#FB923C" borderWidth={1.5} />
+
       {/* Subtle top accent gradient */}
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
 

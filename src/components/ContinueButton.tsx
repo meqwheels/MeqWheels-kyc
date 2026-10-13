@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, AlertCircle, Shield, Sparkles } from 'lucide-react';
 import { useRental } from '@/context/RentalContext';
+import { AnimatedButton } from '@/components/ui/animated-button';
 
 export function ContinueButton() {
   const router = useRouter();
@@ -139,15 +140,16 @@ export function ContinueButton() {
             </div>
           )}
 
-          <button
-            type="button"
+          <AnimatedButton
             onClick={validateAndProceed}
-            className="w-full sm:w-auto min-w-[240px] group relative flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:via-orange-500 hover:to-amber-400 text-white font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+            className="w-full sm:w-auto min-w-[240px] px-6 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:via-orange-500 hover:to-amber-400 text-white font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 border-orange-400/30 cursor-pointer"
           >
-            <Shield className="w-4 h-4 text-white" />
-            <span>Start DigiLocker KYC</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
-          </button>
+            <span className="flex items-center justify-center gap-2.5">
+              <Shield className="w-4 h-4 text-white" />
+              <span>Start DigiLocker KYC</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
+            </span>
+          </AnimatedButton>
         </div>
       </div>
     </div>

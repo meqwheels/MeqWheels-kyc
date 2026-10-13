@@ -8,14 +8,21 @@ import { AddVehicleButton } from '@/components/AddVehicleButton';
 import { ContinueButton } from '@/components/ContinueButton';
 import { useRental } from '@/context/RentalContext';
 import { Bike, Shield, Layers } from 'lucide-react';
+import { AnimatedRays } from '@/components/ui/animated-rays';
 
 export default function CreateRentalSessionPage() {
   const { session } = useRental();
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#08080C] text-neutral-100">
-      {/* Header */}
-      <Header />
+    <div className="flex flex-col min-h-screen bg-[#08080C] text-neutral-100 relative">
+      {/* Vengeance UI Animated Rays Full Page Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <AnimatedRays fullPage className="w-full h-full opacity-45" />
+      </div>
+
+      {/* Foreground Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
@@ -92,6 +99,7 @@ export default function CreateRentalSessionPage() {
 
       {/* Sticky Bottom Action Button */}
       <ContinueButton />
+      </div>
     </div>
   );
 }

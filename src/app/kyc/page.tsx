@@ -18,6 +18,9 @@ import {
   Check,
   RotateCcw,
 } from 'lucide-react';
+import { BorderBeam } from '@/components/ui/border-beam';
+import { AnimatedButton } from '@/components/ui/animated-button';
+import { AnimatedRays } from '@/components/ui/animated-rays';
 
 export default function RiderKycPage() {
   const { session, getAllRiders, getVerificationStats, verifyAllRiders, resetSession } = useRental();
@@ -54,9 +57,15 @@ export default function RiderKycPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#08080C] text-neutral-100">
-      {/* Header */}
-      <Header />
+    <div className="flex flex-col min-h-screen bg-[#08080C] text-neutral-100 relative">
+      {/* Vengeance UI Animated Rays Full Page Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <AnimatedRays fullPage className="w-full h-full opacity-45" />
+      </div>
+
+      {/* Foreground Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
@@ -112,8 +121,11 @@ export default function RiderKycPage() {
 
         {/* Success All-Verified Banner */}
         {allVerified && (
-          <div className="glass-panel p-6 sm:p-7 border-emerald-500/40 bg-emerald-950/20 shadow-[0_0_35px_-5px_rgba(16,185,129,0.2)] animate-in fade-in slide-in-from-top-3 duration-300">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="glass-panel p-6 sm:p-7 border-emerald-500/40 bg-emerald-950/20 shadow-[0_0_35px_-5px_rgba(16,185,129,0.2)] animate-in fade-in slide-in-from-top-3 duration-300 relative overflow-hidden">
+            {/* Vengeance UI Glowing Emerald Border Beam */}
+            <BorderBeam size={260} duration={8} colorFrom="#10B981" colorTo="#059669" borderWidth={1.5} />
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
               <div className="flex items-center gap-3.5">
                 <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                   <CheckCircle2 className="w-7 h-7" />
@@ -132,14 +144,15 @@ export default function RiderKycPage() {
               </div>
 
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                <button
-                  type="button"
+                <AnimatedButton
                   onClick={() => window.print()}
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] text-white text-xs font-semibold border border-white/10 transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] text-white text-xs font-semibold border-white/10 cursor-pointer"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Print Gate Pass</span>
-                </button>
+                  <span className="flex items-center justify-center gap-2">
+                    <Printer className="w-3.5 h-3.5" />
+                    <span>Print Gate Pass</span>
+                  </span>
+                </AnimatedButton>
                 <Link
                   href="/"
                   className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
@@ -197,6 +210,7 @@ export default function RiderKycPage() {
           <span className="font-mono text-[11px] text-neutral-600">Booking ID: {session.customerId}</span>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

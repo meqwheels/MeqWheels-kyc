@@ -4,6 +4,8 @@ import React from 'react';
 import { ShieldCheck, CheckCircle2, Clock, Loader2, Phone, User, RotateCcw } from 'lucide-react';
 import { FlattenedRiderKYC } from '@/types/kyc';
 import { useRental } from '@/context/RentalContext';
+import { BorderBeam } from '@/components/ui/border-beam';
+import { AnimatedButton } from '@/components/ui/animated-button';
 
 interface RiderKycCardProps {
   item: FlattenedRiderKYC;
@@ -37,6 +39,10 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
           : 'hover:border-white/20'
       }`}
     >
+      {/* Vengeance UI Glowing Border Beam for Verified Rider */}
+      {isVerified && (
+        <BorderBeam size={200} duration={8} colorFrom="#10B981" colorTo="#34D399" borderWidth={1.5} />
+      )}
       {/* Top Card Bar: Card Index & Linked Customer */}
       <div className="flex items-center justify-between pb-4 border-b border-white/[0.06] mb-5">
         <div className="flex items-center gap-2">
@@ -136,14 +142,15 @@ export function RiderKycCard({ item, cardIndex }: RiderKycCardProps) {
       {/* Button: Complete KYC or Disabled Verified */}
       <div>
         {isPending && (
-          <button
-            type="button"
+          <AnimatedButton
             onClick={handleVerify}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 transition-all duration-200 cursor-pointer active:scale-[0.99]"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 border-orange-400/30 cursor-pointer"
           >
-            <ShieldCheck className="w-4 h-4" />
-            <span>Complete KYC</span>
-          </button>
+            <span className="flex items-center justify-center gap-2">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Complete DigiLocker KYC</span>
+            </span>
+          </AnimatedButton>
         )}
 
         {isVerifying && (

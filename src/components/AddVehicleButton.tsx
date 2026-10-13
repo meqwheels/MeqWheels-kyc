@@ -19,7 +19,7 @@ export function AddVehicleButton() {
 
       <div className="text-left">
         <div className="text-sm sm:text-base font-bold text-white group-hover:text-orange-400 transition-colors flex items-center gap-2 justify-center sm:justify-start">
-          + Add Another Vehicle
+          Add Another Vehicle
           <span className="text-[11px] font-normal px-2 py-0.5 rounded-full bg-white/[0.06] text-neutral-400">
             Current: {session.vehicles.length}
           </span>
