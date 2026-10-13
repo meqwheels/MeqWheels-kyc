@@ -1,66 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/db';
-import { kycConsents } from '@/db/schema';
-import { eq, and, desc } from 'drizzle-orm';
+import { kycRecords } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
-      bookingId,
       customerId,
-      riderName,
-      purpose = 'Identity and Driving Licence verification for two-wheeler vehicle rental under Motor Vehicles Act, 1988',
-      consentVersion = 'v1.0-2026',
       agreed = false,
     } = body;
 
-    if (!bookingId || !customerId || !riderName) {
+    if (!customerId) {
       return NextResponse.json(
-        { success: false, error: 'bookingId, customerId, and riderName are required.' },
+        { success: false, error: 'customerId is required.' },
         { status: 400 }
       );
     }
 
-    const consentId = `CNS-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const status = agreed ? 'GRANTED' : 'DECLINED';
-    const createdAt = new Date().toISOString();
+    const trimmedCustomerId = customerId.trim();
+    const newStatus = agreed ? 'VERIFIED' : 'PENDING';
 
     const db = getDb();
-    await db.insert(kycConsents).values({
-      id: consentId,
-      bookingId: bookingId.trim(),
-      customerId: customerId.trim(),
-      riderName: riderName.trim(),
-      purpose: purpose.trim(),
-      consentVersion: consentVersion.trim(),
-      status,
-      createdAt,
-    });
+    // Update existing table kyc_records directly
+    await db
+      .update(kycRecords)
+      .set({ kycStatus: newStatus })
+      .where(eq(kycRecords.customerId, trimmedCustomerId));
 
     // Background sync to remote Cloudflare D1 if configured
     try {
       const { executeRemoteD1 } = await import('@/db/remote');
-      const safeRider = riderName.replace(/'/g, "''");
-      const safePurpose = purpose.replace(/'/g, "''");
       executeRemoteD1(
-        `INSERT INTO kyc_consents (id, booking_id, customer_id, rider_name, purpose, consent_version, status, created_at) VALUES ('${consentId}', '${bookingId}', '${customerId}', '${safeRider}', '${safePurpose}', '${consentVersion}', '${status}', '${createdAt}');`
-      ).catch((err) => console.error('Remote D1 consent log error:', err));
+        `UPDATE kyc_records SET kyc_status = '${newStatus}' WHERE customer_id = '${trimmedCustomerId}';`
+      ).catch((err) => console.error('Remote D1 update error:', err));
     } catch {
       // Non-blocking
     }
 
     return NextResponse.json({
       success: true,
-      consentId,
-      status,
-      customerId,
-      recordedAt: createdAt,
+      customerId: trimmedCustomerId,
+      status: newStatus,
+      agreed,
+      recordedAt: new Date().toISOString(),
     });
   } catch (err: any) {
-    console.error('Error recording consent:', err);
+    console.error('Error updating status in kyc_records:', err);
     return NextResponse.json(
-      { success: false, error: err.message || 'Failed to record consent.' },
+      { success: false, error: err.message || 'Failed to update record in kyc_records.' },
       { status: 500 }
     );
   }
@@ -81,21 +69,20 @@ export async function GET(req: NextRequest) {
     const db = getDb();
     const rows = await db
       .select()
-      .from(kycConsents)
-      .where(and(eq(kycConsents.customerId, customerId), eq(kycConsents.status, 'GRANTED')))
-      .orderBy(desc(kycConsents.createdAt))
+      .from(kycRecords)
+      .where(eq(kycRecords.customerId, customerId.trim()))
       .limit(1);
 
-    const hasConsent = rows && rows.length > 0;
+    const isVerified = rows && rows.length > 0 && rows[0].kycStatus === 'VERIFIED';
     return NextResponse.json({
       success: true,
-      hasConsent,
-      consent: hasConsent ? rows[0] : null,
+      hasConsent: isVerified,
+      record: rows && rows.length > 0 ? rows[0] : null,
     });
   } catch (err: any) {
-    console.error('Error checking consent:', err);
+    console.error('Error querying kyc_records:', err);
     return NextResponse.json(
-      { success: false, error: err.message || 'Failed to check consent.' },
+      { success: false, error: err.message || 'Failed to query kyc_records.' },
       { status: 500 }
     );
   }

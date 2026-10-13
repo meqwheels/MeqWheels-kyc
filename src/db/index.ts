@@ -135,17 +135,6 @@ export function getDb(): any {
         kyc_status      TEXT DEFAULT 'PENDING',
         created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
       );
-
-      CREATE TABLE IF NOT EXISTS kyc_consents (
-        id              TEXT PRIMARY KEY,
-        booking_id      TEXT NOT NULL,
-        customer_id     TEXT NOT NULL,
-        rider_name      TEXT NOT NULL,
-        purpose         TEXT NOT NULL,
-        consent_version TEXT NOT NULL,
-        status          TEXT NOT NULL,
-        created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
     `);
 
     const { drizzle } = require('drizzle-orm/better-sqlite3');
