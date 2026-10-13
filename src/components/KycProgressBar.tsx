@@ -6,13 +6,29 @@ import { useRental } from '@/context/RentalContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
 
 interface KycProgressBarProps {
-  onSimulateAll?: () => void;
+  onSimulateAll?: () => void | Promise<void>;
   isSimulating?: boolean;
+  stats?: {
+    total: number;
+    verified: number;
+    pending: number;
+    percent: number;
+  };
+  customerName?: string;
+  bookingId?: string;
 }
 
-export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarProps) {
+export function KycProgressBar({
+  onSimulateAll,
+  isSimulating,
+  stats: statsProp,
+  customerName: customerNameProp,
+  bookingId: bookingIdProp,
+}: KycProgressBarProps) {
   const { getVerificationStats, session } = useRental();
-  const { total, verified, pending, percent } = getVerificationStats();
+  const { total, verified, pending, percent } = statsProp ?? getVerificationStats();
+  const customerName = customerNameProp ?? session.customerName;
+  const bookingId = bookingIdProp ?? session.customerId;
   const isComplete = total > 0 && verified === total;
 
   return (
@@ -81,7 +97,7 @@ export function KycProgressBar({ onSimulateAll, isSimulating }: KycProgressBarPr
 
       {/* Mini details strip */}
       <div className="flex items-center justify-between text-[11px] text-neutral-400 mt-2.5">
-        <span>Customer: <strong className="text-white font-medium">{session.customerName || 'N/A'}</strong> (Booking: {session.customerId})</span>
+        <span>Customer: <strong className="text-white font-medium">{customerName || 'N/A'}</strong>{bookingId ? ` (Booking: ${bookingId})` : ''}</span>
         <span>{pending > 0 ? `${pending} pending verification` : 'Ready for vehicle release'}</span>
       </div>
     </div>
